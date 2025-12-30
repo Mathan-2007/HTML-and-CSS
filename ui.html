@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat UI | Dashboard</title>
+    <style>
+        /* Base Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Layout Container */
+        .chat-container {
+            width: 95%;
+            max-width: 1200px;
+            height: 90vh;
+            background: #fff;
+            display: flex;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 350px;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            background: #ffffff;
+        }
+
+        .sidebar-header {
+            padding: 20px;
+            border-bottom: 1px solid #f3f4f6;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .contact-list {
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .contact {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background 0.2s;
+            border-bottom: 1px solid #f9fafb;
+        }
+
+        .contact:hover { background-color: #f3f4f6; }
+        .contact.active { background-color: #eff6ff; border-left: 4px solid #3b82f6; }
+
+        .avatar {
+            width: 45px;
+            height: 45px;
+            background: #d1d5db;
+            border-radius: 50%;
+            margin-right: 15px;
+        }
+
+        .contact-info h4 { font-size: 0.95rem; color: #111827; }
+        .contact-info p { font-size: 0.85rem; color: #6b7280; white-space: nowrap; }
+
+        /* Main Chat Window */
+        .main-chat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: #fff;
+        }
+
+        .chat-header {
+            padding: 15px 25px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            background-image: radial-gradient(#e5e7eb 0.5px, transparent 0.5px);
+            background-size: 20px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Message Bubbles */
+        .message {
+            max-width: 70%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .received {
+            align-self: flex-start;
+            background: #f3f4f6;
+            color: #1f2937;
+            border-bottom-left-radius: 2px;
+        }
+
+        .sent {
+            align-self: flex-end;
+            background: #3b82f6;
+            color: white;
+            border-bottom-right-radius: 2px;
+        }
+
+        .time {
+            font-size: 0.7rem;
+            display: block;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+
+        /* Input Area */
+        .chat-input-area {
+            padding: 20px;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            gap: 10px;
+        }
+
+        input[type="text"] {
+            flex: 1;
+            padding: 12px 20px;
+            border: 1px solid #d1d5db;
+            border-radius: 25px;
+            outline: none;
+            transition: border 0.2s;
+        }
+
+        input[type="text"]:focus { border-color: #3b82f6; }
+
+        .send-btn {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 0 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .send-btn:hover { background: #2563eb; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 80px; }
+            .contact-info, .sidebar-header { display: none; }
+            .avatar { margin-right: 0; }
+            .contact { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chat-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">Messages</div>
+            <div class="contact-list">
+                <div class="contact active">
+                    <div class="avatar" style="background: #3b82f6;"></div>
+                    <div class="contact-info">
+                        <h4>Alex Johnson</h4>
+                        <p>The server is back up!</p>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="avatar" style="background: #10b981;"></div>
+                    <div class="contact-info">
+                        <h4>Sarah Chen</h4>
+                        <p>Let's review the SaaS metrics.</p>
+                    </div>
+                </div>
+                <div class="contact">
+                    <div class="avatar" style="background: #f59e0b;"></div>
+                    <div class="contact-info">
+                        <h4>Design Team</h4>
+                        <p>New assets uploaded to Figma.</p>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <main class="main-chat">
+            <div class="chat-header">
+                <div style="display: flex; align-items: center;">
+                    <div class="avatar" style="width: 35px; height: 35px; background: #3b82f6;"></div>
+                    <strong style="margin-left: 10px;">Alex Johnson</strong>
+                </div>
+                <div style="color: #6b7280; font-size: 0.8rem;">Online</div>
+            </div>
+
+            <div class="chat-messages">
+                <div class="message received">
+                    Hey! Have you seen the latest deployment?
+                    <span class="time">10:42 AM</span>
+                </div>
+                <div class="message sent">
+                    Just checking it now. Everything looks stable on my end.
+                    <span class="time">10:45 AM</span>
+                </div>
+                <div class="message received">
+                    Great. I've updated the API documentation as well.
+                    <span class="time">10:46 AM</span>
+                </div>
+                <div class="message sent">
+                    Awesome, thanks for the quick turnaround! 🚀
+                    <span class="time">10:48 AM</span>
+                </div>
+            </div>
+
+            <div class="chat-input-area">
+                <input type="text" placeholder="Type a message...">
+                <button class="send-btn">Send</button>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>
